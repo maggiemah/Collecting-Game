@@ -248,7 +248,7 @@ int playGame(const char* filename)
         printf("Score: %d\n", score);
         printf("Items remaining: %d\n", items);
         char input = getInput();
-        //left (0), right (1), up (2), down (3), quit (4)
+        //inputs: left (0), right (1), up (2), down (3), quit (4)
         if(turnsOfPower > 0)
             turnsOfPower--;
         if(turnsOfPower == 0)
