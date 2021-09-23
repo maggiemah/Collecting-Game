@@ -5,15 +5,11 @@
 #include <stdbool.h>
 
 char moves[5] = {'a', 'd', 'w', 's', 'q'};
-char charIcon = ' ';
-char poweredIcon = ' ';
-char activeIcon = ' ';
+char charIcon = ' ', poweredIcon = ' ', activeIcon = ' ';
 int currentX, currentY;
-int items = 0;
-int score = 0;
-bool powerMode = false;
+int items = 0, score = 0;
+bool powerMode = false, won = false, collision = false, quit = false;
 int turnsOfPower = 0;
-bool won = false, collision = false, quit = false;
 char* endMessage = "";
 
 struct Board
@@ -65,8 +61,6 @@ void setMoves(FILE *file)
         else
             i--;
     }
-    // for(int i = 0; i < 5; ++i)
-    //     printf("final moves[%d]: %c\n", i, moves[i]);
 }
 
 void setIcons(FILE *file)
@@ -104,7 +98,6 @@ char getInput()
         if(!valid)
             printf("Invalid input.\n");
     }
-    // printf("input: %c\n", input);
     return input;
 }
 
@@ -142,13 +135,10 @@ void checkCollision(struct Board* b, char collide)
 
 void moveChar(struct Board* board, const char* direction)
 {
-    //printf("currentX:%d  currentY:%d\n", currentX, currentY);
-    //left (0), right (1), up (2), down (3), quit (4)
     changeBoard(board, ' ', currentX , currentY);
     if(strcmp(direction, "left") == 0)
     {
-        char left = board->board[currentX+1][currentY]; //currentX is actualX-1, currentY is actualY-1
-        //printf("left: %c\n", left);
+        char left = board->board[currentX+1][currentY];
         if(left != '-' && left != '&' && currentY != 0)
         {
             currentY--;
@@ -158,7 +148,6 @@ void moveChar(struct Board* board, const char* direction)
     else if(strcmp(direction, "right") == 0)
     {
         char right = board->board[currentX+1][currentY+2];
-        //printf("right: %c\n", right);
         if(right != '-' && right != '&' && currentY != board->width-1)
         {
             currentY++;
@@ -168,7 +157,6 @@ void moveChar(struct Board* board, const char* direction)
     else if(strcmp(direction, "up") == 0)
     {
         char above = board->board[currentX][currentY+1];
-        //printf("up: %c\n", above);
         if(above != '-' && above != '&' && currentX != 0)
         {
             currentX--;
@@ -178,14 +166,12 @@ void moveChar(struct Board* board, const char* direction)
     else if(strcmp(direction, "down") == 0)
     {
         char down = board->board[currentX+2][currentY+1];
-        //printf("down: %c\n", down);
         if(down != '-' && down != '&' && currentX != board->height-1)
         {
             currentX++;
             checkCollision(board, down);
         }
     }
-    //printf("currentX:%d  currentY:%d\n", currentX, currentY);
     if(!collision)
         changeBoard(board, activeIcon, currentX, currentY);
 }
